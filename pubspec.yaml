@@ -28,3 +28,4 @@ flutter:
   # Asset section added here with correct indentation
   assets:
     - assets/TB_Login.png
+    - assets/TB_Signup.png
