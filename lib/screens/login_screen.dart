@@ -1,83 +1,7 @@
-// import 'package:flutter/material.dart';
-// import '../services/auth_service.dart';
-// import 'signup_screen.dart';
-
-// class LoginScreen extends StatefulWidget {
-//   const LoginScreen({super.key});
-
-//   @override
-//   State<LoginScreen> createState() => _LoginScreenState();
-// }
-
-// class _LoginScreenState extends State<LoginScreen> {
-//   final TextEditingController _emailController = TextEditingController();
-//   final TextEditingController _passwordController = TextEditingController();
-//   final AuthService _auth = AuthService();
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: Colors.white, // FIX 1: Ensures the screen is solid, not transparent
-//       body: SafeArea( // FIX 2: Keeps content away from the top notch/status bar
-//         child: SingleChildScrollView( // FIX 3: Prevents keyboard overlap issues
-//           child: Padding(
-//             padding: const EdgeInsets.all(20.0),
-//             child: Column(
-//               mainAxisAlignment: MainAxisAlignment.center,
-//               children: [
-//                 const SizedBox(height: 50), // Spacing to look better
-//                 const Icon(Icons.lock_outline, size: 80, color: Colors.blueAccent),
-//                 const SizedBox(height: 20),
-//                 const Text("Welcome Back!", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-//                 const SizedBox(height: 30),
-                
-//                 TextField(
-//                   controller: _emailController,
-//                   decoration: const InputDecoration(labelText: "Email", border: OutlineInputBorder()),
-//                 ),
-//                 const SizedBox(height: 20),
-//                 TextField(
-//                   controller: _passwordController,
-//                   obscureText: true,
-//                   decoration: const InputDecoration(labelText: "Password", border: OutlineInputBorder()),
-//                 ),
-//                 const SizedBox(height: 30),
-                
-//                 ElevatedButton(
-//                   style: ElevatedButton.styleFrom(minimumSize: const Size(double.infinity, 50)),
-//                   onPressed: () async {
-//                     var user = await _auth.login(_emailController.text.trim(), _passwordController.text);
-//                     if (user != null) {
-//                       ScaffoldMessenger.of(context).showSnackBar(
-//                         const SnackBar(content: Text("Login Successful! ✨")),
-//                       );
-//                     } else {
-//                       ScaffoldMessenger.of(context).showSnackBar(
-//                         const SnackBar(content: Text("Invalid Email or Password")),
-//                       );
-//                     }
-//                   },
-//                   child: const Text("Login"),
-//                 ),
-                
-//                 TextButton(
-//                   onPressed: () {
-//                     Navigator.push(context, MaterialPageRoute(builder: (context) => const SignUpScreen()));
-//                   },
-//                   child: const Text("Don't have an account? Sign Up"),
-//                 ),
-//               ],
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
 import 'signup_screen.dart';
+import 'home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -119,6 +43,10 @@ class _LoginScreenState extends State<LoginScreen> {
         _showSnackBar("Welcome back! Login Successful ✨", Colors.green);
         
         // NOTE: Here you would navigate to your Home Screen
+        Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+        );
         // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
       } else {
         // FAILURE MESSAGE (Wrong credentials)
@@ -345,3 +273,4 @@ class WaveClipper extends CustomClipper<Path> {
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
+
