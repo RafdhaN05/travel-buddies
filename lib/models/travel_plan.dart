@@ -5,6 +5,7 @@ class TravelPlan {
   String description;
   String postedBy;
   String imageUrl; // Stores the Firebase Storage image URL
+  List<String> buddies; // Stores the list of users joining the trip
 
   TravelPlan({
     required this.id,
@@ -13,6 +14,7 @@ class TravelPlan {
     required this.description,
     required this.postedBy,
     required this.imageUrl,
+    required this.buddies,
   });
 
   // Converts Firebase JSON data into a TravelPlan object
@@ -24,6 +26,8 @@ class TravelPlan {
       description: json['description'] ?? '',
       postedBy: json['postedBy'] ?? '',
       imageUrl: json['imageUrl'] ?? '',
+      // Converts the Firebase array into a Dart List<String>
+      buddies: List<String>.from(json['buddies'] ?? []),
     );
   }
 
@@ -35,6 +39,7 @@ class TravelPlan {
       'description': description,
       'postedBy': postedBy,
       'imageUrl': imageUrl,
+      'buddies': buddies,
     };
   }
 }
