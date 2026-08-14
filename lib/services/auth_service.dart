@@ -11,6 +11,7 @@ class AuthService {
           email: email, password: password);
       return result.user;
     } catch (e) {
+      // ignore: avoid_print
       print("Sign Up Error: ${e.toString()}");
       return null;
     }
@@ -23,6 +24,7 @@ class AuthService {
           email: email, password: password);
       return result.user;
     } catch (e) {
+      // ignore: avoid_print
       print("Login Error: ${e.toString()}");
       return null;
     }

@@ -65,6 +65,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   // DARK OVERLAY FOR TEXT READABILITY
                   Container(
                     decoration: BoxDecoration(
+                      // ignore: deprecated_member_use
                       color: Colors.black.withOpacity(0.2),
                       borderRadius: const BorderRadius.only(
                         bottomLeft: Radius.circular(50),
@@ -175,6 +176,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                         if (user != null) {
                           _showMessage("Success! Welcome Buddy! ✨", Colors.green);
+                          // ignore: use_build_context_synchronously
                           Navigator.pop(context); // Go back to Login
                         } else {
                           _showMessage("Registration Failed. Try again.", Colors.red);
@@ -234,6 +236,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
+          // ignore: deprecated_member_use
           BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 5)),
         ],
       ),

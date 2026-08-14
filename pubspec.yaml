@@ -18,6 +18,7 @@ dependencies:
   firebase_storage: ^13.4.6
   image_picker: ^1.2.3
   http: ^1.6.0
+  intl: ^0.19.0 # Added this for the Calendar feature
 
 dev_dependencies:
   flutter_test:
@@ -27,7 +28,9 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-  # Asset section added here with correct indentation
+  # Asset section with correct indentation
   assets:
     - assets/TB_Login.png
     - assets/TB_Signup.png
+    - assets/Profile_Image.png
+    

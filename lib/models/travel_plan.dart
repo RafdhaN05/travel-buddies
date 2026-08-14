@@ -1,11 +1,12 @@
 class TravelPlan {
-  String id;
-  String destination;
-  String date;
-  String description;
-  String postedBy;
-  String imageUrl; // Stores the Firebase Storage image URL
-  List<String> buddies; // Stores the list of users joining the trip
+  final String id;
+  final String destination;
+  final String date;
+  final String description;
+  final String postedBy; // Kept this so the Delete/Bin icon logic works
+  final String imageUrl; 
+  final List<String> buddies; 
+  final int maxBuddies; 
 
   TravelPlan({
     required this.id,
@@ -15,23 +16,27 @@ class TravelPlan {
     required this.postedBy,
     required this.imageUrl,
     required this.buddies,
+    required this.maxBuddies,
   });
 
-  // Converts Firebase JSON data into a TravelPlan object
+  // --- FROM JSON: Converts Firebase data into this Dart Object ---
   factory TravelPlan.fromJson(Map<String, dynamic> json, String id) {
     return TravelPlan(
       id: id,
+      // The ?? ensures that if a field is missing in Firebase, the app won't crash
       destination: json['destination'] ?? '',
       date: json['date'] ?? '',
       description: json['description'] ?? '',
       postedBy: json['postedBy'] ?? '',
       imageUrl: json['imageUrl'] ?? '',
-      // Converts the Firebase array into a Dart List<String>
+      // Correctly maps the list of users from Firebase
       buddies: List<String>.from(json['buddies'] ?? []),
+      // If maxBuddies is missing in older database entries, it defaults to 10
+      maxBuddies: json['maxBuddies'] ?? 10,
     );
   }
 
-  // Converts a TravelPlan object into JSON for Firebase
+  // --- TO JSON: Converts this Object into a format Firebase understands ---
   Map<String, dynamic> toJson() {
     return {
       'destination': destination,
@@ -40,6 +45,7 @@ class TravelPlan {
       'postedBy': postedBy,
       'imageUrl': imageUrl,
       'buddies': buddies,
+      'maxBuddies': maxBuddies,
     };
   }
 }

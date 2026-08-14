@@ -33,6 +33,7 @@ class CloudinaryService {
         return null;
       }
     } catch (e) {
+      // ignore: avoid_print
       print("Error: $e");
       return null;
     }

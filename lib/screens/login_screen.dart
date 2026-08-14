@@ -44,6 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
         
         // NOTE: Here you would navigate to your Home Screen
         Navigator.push(
+        // ignore: use_build_context_synchronously
         context,
         MaterialPageRoute(builder: (context) => HomeScreen()),
         );
@@ -86,6 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Stack(
                 children: [
                   // The Background Image from your assets
+                  // ignore: sized_box_for_whitespace
                   Container(
                     height: 380,
                     width: double.infinity,
@@ -101,6 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       gradient: LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
+                        // ignore: deprecated_member_use
                         colors: [Colors.black.withOpacity(0.3), Colors.transparent],
                       ),
                     ),
@@ -242,6 +245,7 @@ class _LoginScreenState extends State<LoginScreen> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
+          // ignore: deprecated_member_use
           BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 5)),
         ],
       ),
