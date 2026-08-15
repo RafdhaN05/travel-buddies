@@ -10,6 +10,7 @@ import '../services/cloudinary_service.dart';
 
 import 'plan_details_screen.dart';
 import 'profile_screen.dart';
+import 'my_trips_screen.dart'; // 1. IMPORTED YOUR NEW SCREEN
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -96,11 +97,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final String myId = FirebaseAuth.instance.currentUser?.uid ?? "unknown";
 
-    // 2. Updated List of screens (ProfileScreen is now linked correctly)
+    // 2. Updated List of screens (MyTripsScreen is now linked correctly)
     final List<Widget> _screens = [
       _buildTravelFeed(myId),                             // Index 0: Home Feed
       const Center(child: Text("Explore Screen Coming Soon")), // Index 1
-      const Center(child: Text("My Trips Screen Coming Soon")), // Index 2
+      MyTripsScreen(),                                    // Index 2: LINKED REAL SCREEN HERE
       const ProfileScreen(),                              // Index 3: Real Profile Screen
     ];
 
@@ -115,13 +116,10 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         title: const Text("Travel Feed", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 24)),
         centerTitle: true,
-        // REMOVED: The actions/logout button is gone from here
       ),
       
-      // Body changes based on _selectedIndex
       body: _screens[_selectedIndex],
 
-      // The Add Button is only visible on the Feed tab (Index 0)
       floatingActionButton: _selectedIndex == 0 ? FloatingActionButton.extended(
         backgroundColor: const Color(0xFF0D47A1),
         onPressed: () => _showAddPlanDialog(context),
@@ -334,3 +332,4 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
