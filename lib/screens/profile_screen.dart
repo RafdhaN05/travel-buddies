@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../services/weather_service.dart';
+import 'login_screen.dart'; // 1. ADDED THIS IMPORT
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -11,7 +12,6 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final WeatherService _weatherService = WeatherService();
-  
   final TextEditingController _cityController = TextEditingController();
   
   Map<String, dynamic>? weatherData;
@@ -19,13 +19,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void getWeather() async {
     if (_cityController.text.trim().isEmpty) return;
-
     FocusScope.of(context).unfocus(); 
-    
     setState(() => isLoading = true);
-    
     final data = await _weatherService.fetchWeather(_cityController.text.trim());
-    
     setState(() {
       weatherData = data;
       isLoading = false;
@@ -33,22 +29,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
 
-    // FIX: Removed Scaffold and used Container to prevent nested layout gaps
     return Container(
       color: const Color(0xFFF8FAFF),
       child: SingleChildScrollView(
-        padding: EdgeInsets.zero, // FIX: Ensure no top padding
+        padding: EdgeInsets.zero, 
         child: Column(
           children: [
-            // --- SECTION 1: HEADER WITH WAVE & IMAGE ---
+            // --- SECTION 1: HEADER ---
             Stack(
               children: [
                 ClipPath(
@@ -65,7 +55,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
                 const Positioned(
-                  top: 40, // Adjusted top position since inner AppBar is gone
+                  top: 40,
                   left: 0,
                   right: 0,
                   child: Center(
@@ -92,7 +82,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
-                    // ignore: deprecated_member_use
                     color: Colors.black.withOpacity(0.05), 
                     blurRadius: 10, 
                     offset: const Offset(0, 5)
@@ -137,7 +126,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   const Text("Get real-time weather updates for any city.", style: TextStyle(color: Colors.grey)),
                   const SizedBox(height: 15),
                   
-                  // Search Bar
                   TextField(
                     controller: _cityController,
                     onSubmitted: (value) => getWeather(), 
@@ -159,7 +147,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                   const SizedBox(height: 20),
 
-                  // WEATHER DATA DISPLAY
                   if (isLoading)
                     const Center(child: CircularProgressIndicator())
                   else if (weatherData != null)
@@ -175,11 +162,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
 
-            // --- LOGOUT BUTTON ---
+            // --- LOGOUT BUTTON (FIXED LOGIC) ---
             Padding(
               padding: const EdgeInsets.all(25.0),
               child: OutlinedButton.icon(
-                onPressed: () => FirebaseAuth.instance.signOut(),
+                onPressed: () async {
+                  // A. Sign out from Firebase
+                  await FirebaseAuth.instance.signOut();
+                  
+                  // B. Move back to Login Screen and clear the memory of other pages
+                  if (context.mounted) {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => const LoginScreen()),
+                      (route) => false, // This makes it impossible to go "back" to profile
+                    );
+                  }
+                },
                 icon: const Icon(Icons.logout, color: Colors.redAccent),
                 label: const Text("Logout", style: TextStyle(color: Colors.redAccent)),
                 style: OutlinedButton.styleFrom(
@@ -206,7 +205,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(25),
-        // ignore: deprecated_member_use
         border: Border.all(color: Colors.blueAccent.withOpacity(0.1)),
       ),
       child: Column(
