@@ -10,7 +10,7 @@ import '../services/cloudinary_service.dart';
 
 import 'plan_details_screen.dart';
 import 'profile_screen.dart';
-import 'my_trips_screen.dart'; // 1. IMPORTED YOUR NEW SCREEN
+import 'my_trips_screen.dart'; 
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -97,12 +97,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final String myId = FirebaseAuth.instance.currentUser?.uid ?? "unknown";
 
-    // 2. Updated List of screens (MyTripsScreen is now linked correctly)
+    // 2. FINAL UPDATED SCREEN LIST (3 items now)
     final List<Widget> _screens = [
-      _buildTravelFeed(myId),                             // Index 0: Home Feed
-      const Center(child: Text("Explore Screen Coming Soon")), // Index 1
-      MyTripsScreen(),                                    // Index 2: LINKED REAL SCREEN HERE
-      const ProfileScreen(),                              // Index 3: Real Profile Screen
+      _buildTravelFeed(myId),   // Index 0: Home Feed
+      MyTripsScreen(),          // Index 1: Real My Trips Screen
+      const ProfileScreen(),    // Index 2: Real Profile Screen
     ];
 
     return Scaffold(
@@ -114,12 +113,17 @@ class _HomeScreenState extends State<HomeScreen> {
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(bottom: Radius.circular(30)),
         ),
-        title: const Text("Travel Feed", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 24)),
+        // Dynamic Title based on selected tab
+        title: Text(
+          _selectedIndex == 0 ? "Travel Feed" : _selectedIndex == 1 ? "My Trips" : "My Profile",
+          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 24),
+        ),
         centerTitle: true,
       ),
       
       body: _screens[_selectedIndex],
 
+      // 3. FAB logic maintained: Only show on Feed
       floatingActionButton: _selectedIndex == 0 ? FloatingActionButton.extended(
         backgroundColor: const Color(0xFF0D47A1),
         onPressed: () => _showAddPlanDialog(context),
@@ -127,6 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
         icon: const Icon(Icons.add, color: Colors.white),
       ) : null,
       
+      // 4. FINAL UPDATED NAVIGATION BAR (3 items now)
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         selectedItemColor: const Color(0xFF0D47A1),
@@ -139,7 +144,6 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: "Feed"),
-          BottomNavigationBarItem(icon: Icon(Icons.explore_outlined), label: "Detail"),
           BottomNavigationBarItem(icon: Icon(Icons.work_outline), label: "My Trips"),
           BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: "Profile"),
         ],
@@ -332,4 +336,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
